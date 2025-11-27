@@ -34,7 +34,7 @@ module "eks-deployment" {
   
 }
 
-module "namecheap-deployment" {
+module "r53-hosted-zone" {
     source = "./module-dns"
     environment = var.environment
     domain-name = var.domain-name
