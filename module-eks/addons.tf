@@ -17,24 +17,24 @@ data "aws_eks_cluster_auth" "eks" {
     name = aws_eks_cluster.eks.name
 }
 
-# Create namespaces
-resource "kubernetes_namespace" "ingress" {
-  metadata {
-    name = "ingress-nginx"
-  }
-}
+# # Create namespaces
+# resource "kubernetes_namespace" "ingress" {
+#   metadata {
+#     name = "ingress-nginx"
+#   }
+# }
 
-resource "kubernetes_namespace" "cert_manager" {
-  metadata {
-    name = "cert-manager"
-  }
-}
+# resource "kubernetes_namespace" "cert_manager" {
+#   metadata {
+#     name = "cert-manager"
+#   }
+# }
 
-resource "kubernetes_namespace" "argocd" {
-  metadata {
-    name = "argocd"
-  }
-}
+# resource "kubernetes_namespace" "argocd" {
+#   metadata {
+#     name = "argocd"
+#   }
+# }
 
 
 resource "helm_release" "nginx_ingress" {
@@ -43,7 +43,7 @@ resource "helm_release" "nginx_ingress" {
     chart      = "ingress-nginx"
     version    = "4.12.0"
     namespace  = "ingress-nginx"
-    create_namespace = false #true
+    create_namespace = true
     timeout = 600 
 
     values = [file("${path.module}/nginx-ingress-values.yaml")]
@@ -64,7 +64,7 @@ resource "helm_release" "cert_manager" {
     chart      = "cert-manager"
     version    = "1.14.5"
     namespace  = "cert-manager"
-    create_namespace = false #true
+    create_namespace = true
     set = [{
         name  = "installCRDs"
         value = "true"
@@ -81,7 +81,7 @@ resource "helm_release" "argocd" {
     chart            = "argo-cd"
     version          = "5.51.6"
     namespace        = "argocd"
-    create_namespace = false #true
+    create_namespace = true
     wait = true
     values = [file("${path.module}/argocd-values.yaml")]
     depends_on = [ helm_release.nginx_ingress, helm_release.cert_manager]
