@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   deploy-iac:
-    runs-on: self-hosted #terraform #ubuntu-latest
+    runs-on: ubuntu-latest  # use GitHub hosted runner, or self-hosted if you have one
 
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -22,16 +22,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # Removed incorrect OIDC setup — you are using static keys, not OIDC.
-      # If you later switch to OIDC, we’ll re-enable the correct config.
-
       - name: Configure AWS credentials using secrets
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: ${{ secrets.AWS_REGION }}
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          # role-to-assume removed as requested
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
@@ -59,9 +55,10 @@ jobs:
       - name: Terraform Plan
         run: terraform plan
 
-       - name: Terraform Apply
-         run: terraform apply -auto-approve
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
 
+      # Uncomment these if you want to deploy kubectl/argocd
       # - name: install kubectl
       #   run: |
       #     curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
@@ -76,6 +73,3 @@ jobs:
 
       # - name: Deploying argocd ingress rule to EKS
       #   run: kubectl apply -f ingress-argocd.yaml -n argocd
-
-      #- name: Terraform Destroy
-       # run: terraform destroy -auto-approve
