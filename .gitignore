@@ -1,18 +1,12 @@
-# Terraform directories
 .terraform/
 .terraform.lock.hcl
-
-# Terraform state files
 *.tfstate
-*.tfstate.backup
-
-
-# Crash logs
+*.tfstate.*
+*.tfvars
+*.tfvars.json
 crash.log
-crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
 
-# CLI configuration files
-terraform.rc
-
-# OS files
-.DS_Store
