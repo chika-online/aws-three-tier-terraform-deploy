@@ -9,7 +9,7 @@
    contents: write
    id-token: write
 
- jobs:
+  jobs:
      deploy-iac:
      runs-on: self-hosted  # use GitHub hosted runner, or self-hosted if you have one
 
