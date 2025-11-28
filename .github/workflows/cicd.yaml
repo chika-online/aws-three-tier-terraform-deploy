@@ -10,7 +10,7 @@
    id-token: write
 
  jobs:
-   deploy-iac:
+     deploy-iac:
      runs-on: self-hosted  # use GitHub hosted runner, or self-hosted if you have one
 
      env:
