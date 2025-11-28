@@ -1,4 +1,4 @@
-name: Deploy to aws with Terraform script
+name: Deploy to aws with Terraform
 
 on:
   push:
