@@ -44,10 +44,10 @@ resource "helm_release" "nginx_ingress" {
     name       = "nginx-ingress"
     repository = "https://kubernetes.github.io/ingress-nginx"
     chart      = "ingress-nginx"
-    version    = "4.12.0"
+    version    = "4.14.0"
     namespace  = "ingress-nginx"
     create_namespace = false
-    timeout = 600 
+    timeout = 700 
 
     values = [file("${path.module}/nginx-ingress-values.yaml")]
     depends_on = [ aws_eks_node_group.eks_node_group, kubernetes_namespace.ingress ]
