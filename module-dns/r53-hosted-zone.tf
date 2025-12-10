@@ -23,10 +23,18 @@ resource "aws_route53_record" "name1" {
     ttl     = 300
     records = [var.nginx_lb_ip]
 }
-resource "aws_route53_record" "name2" {
-    zone_id = aws_route53_zone.r53_zone.zone_id
-    name    = "argocd.${var.domain-name}" # Use a subdomain for CNAME
-    type    = "CNAME"
-    ttl     = 300
-    records = [var.nginx_lb_ip]
+# resource "aws_route53_record" "name2" {
+#     zone_id = aws_route53_zone.r53_zone.zone_id
+#     name    = "argocd.${var.domain-name}" # Use a subdomain for CNAME
+#     type    = "CNAME"
+#     ttl     = 300
+#     records = [var.nginx_lb_ip]
+# }
+
+resource "aws_route53_record" "flux_ui" {
+  zone_id = aws_route53_zone.r53_zone.zone_id
+  name    = "flux.${var.domain-name}" # subdomain for Flux UI
+  type    = "CNAME"
+  ttl     = 300
+  records = [var.nginx_lb_ip]  # Use DNS name of your Nginx LB
 }

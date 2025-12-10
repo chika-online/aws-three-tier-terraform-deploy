@@ -44,10 +44,10 @@ resource "helm_release" "nginx_ingress" {
     name       = "nginx-ingress"
     repository = "https://kubernetes.github.io/ingress-nginx"
     chart      = "ingress-nginx"
-    version    = "4.14.0"
+    version    = "4.12.0"
     namespace  = "ingress-nginx"
     create_namespace = false
-    timeout = 700 
+    timeout = 600 
 
     values = [file("${path.module}/nginx-ingress-values.yaml")]
     depends_on = [ aws_eks_node_group.eks_node_group, kubernetes_namespace.ingress ]
@@ -99,3 +99,4 @@ resource "helm_release" "argocd" {
     values = [file("${path.module}/argocd-values.yaml")]
     depends_on = [ helm_release.nginx_ingress, helm_release.cert_manager, kubernetes_namespace.argocd ]
 }
+
